@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Radar — pre-token protocols ranked by implied launch value</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <span class="sweep" aria-hidden="true"></span>
+    <div>
+      <h1>TOKEN RADAR</h1>
+      <p class="tag">Every pre-token protocol in the snapshot, ranked by what its token could be worth — and what to do about it.</p>
+    </div>
+  </div>
+  <dl class="stats" id="stats"></dl>
+</header>
+
+<nav class="views" id="views" aria-label="Views">
+  <button data-view="board" class="on" type="button">Ranked board</button>
+  <button data-view="live" type="button">Live token market</button>
+  <button data-view="aside" type="button">Set aside</button>
+  <button data-view="model" type="button">How the value is built</button>
+</nav>
+
+<section class="filters" id="filters" aria-label="Filters">
+  <label>Category
+    <select id="f-cat"><option value="">All categories</option></select>
+  </label>
+  <label>Chain
+    <select id="f-chain"><option value="">All chains</option></select>
+  </label>
+  <label>Min TVL
+    <select id="f-tvl">
+      <option value="0">Any size</option>
+      <option value="10000000">$10M+</option>
+      <option value="50000000">$50M+</option>
+      <option value="100000000">$100M+</option>
+      <option value="500000000">$500M+</option>
+      <option value="1000000000">$1B+</option>
+    </select>
+  </label>
+  <label class="check"><input type="checkbox" id="f-watch"> Watchlist only</label>
+  <label class="search">Search
+    <input type="search" id="f-q" placeholder="name or slug…" autocomplete="off">
+  </label>
+  <p class="count" id="count" aria-live="polite"></p>
+</section>
+
+<main class="layout">
+  <div class="table-wrap">
+    <table id="board">
+      <thead>
+        <tr>
+          <th data-sort="rank" class="num on">Rank</th>
+          <th data-sort="name">Protocol</th>
+          <th data-sort="implied_value_usd" class="num">Implied value</th>
+          <th data-sort="tvl_usd" class="num">TVL</th>
+          <th data-sort="change_7d" class="num">7d</th>
+          <th data-sort="age_days" class="num">Age</th>
+          <th data-sort="category">Category</th>
+          <th>Chains</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <p class="hint" id="hint">Click a row for its model breakdown, farm plan and comparables.</p>
+  </div>
+  <aside class="detail" id="detail" aria-live="polite"></aside>
+</main>
+
+<section class="note" id="method" aria-label="Method">
+  <h2>How to read this radar</h2>
+  <p><strong>Implied value</strong> is what a protocol's token could be worth at launch, built only from this
+  snapshot's own figures: its TVL times its category's FDV/TVL multiple — the median market-cap-to-TVL
+  ratio of the live-token protocols in the same category, in this same snapshot — times a growth factor
+  from its 7-day TVL change (clamped −50% to +150%, half weight), times a maturity factor that grows
+  with how long it has run with no token (diminishing, capped at three years), times a small bonus for
+  running on more chains. No name is ever special-cased. Click any row to see its exact factors.</p>
+  <p><strong>“Records no token”</strong> is the snapshot's own wording: the protocol's record carries no market
+  cap, no CoinGecko id and no symbol. The board ranks only such protocols. Protocols that already
+  trade sit in the <em>Live token market</em> view with the market's own values, never a model's.</p>
+  <p><strong>Set aside:</strong> <span id="aside-count"></span> rankable protocols sit at or above the $50M
+  watchlist floor but the watchlist leaves them out — wrapped, staked and bridged products of tokens
+  that already trade, and exchange products. They are listed, not hidden, in the <em>Set aside</em> view.</p>
+  <p class="src" id="src"></p>
+</section>
+
+<footer>
+  <p>Token Radar · model radar-2 · data frozen in the snapshot, no live feed, no network requests.</p>
+</footer>
+
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
